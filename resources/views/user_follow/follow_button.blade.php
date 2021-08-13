@@ -1,4 +1,3 @@
-@if (Auth::id() != $user->id)
     @if (Auth::user()->is_following($user->id))
         {{-- アンフォローボタンのフォーム --}}
         {!! Form::open(['route' => ['user.unfollow', $user->id], 'method' => 'delete']) !!}
@@ -10,4 +9,4 @@
             {!! Form::submit('Follow', ['class' => "btn btn-primary btn-block"]) !!}
         {!! Form::close() !!}
     @endif
-@endif
+

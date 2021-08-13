@@ -1,4 +1,3 @@
-
 @if (count ($microposts) > 0)
     <ul class="list-unstyled">
         @foreach ($microposts as $micropost)
@@ -13,14 +12,26 @@
                     </div>
                     <div>
                         {{-- 投稿内容 --}}
-                        <p class="mb-0">{!! nl2br(e($micropost->content)) !!}</p>
+                        <p class="mb-0">{!! nl2br(($micropost->content)) !!}</p>
                     </div>
                         @if (Auth::id() == $micropost->user_id)
                             {{-- 投稿削除ボタンのフォーム --}}
                             {!! Form::open(['route' => ['microposts.destroy', $micropost->id], 'method' => 'delete']) !!}
-                                {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
+                            {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
                             {!! Form::close() !!}
                         @endif
+                        @if (Auth::user()->is_favoriting($micropost->id))
+                         {{-- unfavoriteボタンのフォーム --}}
+                         {!! Form::open(['route' => ['favorites.unfavorite', $micropost->id], 'method' => 'delete']) !!}
+                         {!! Form::submit('Unfavorite', ['class' => "btn btn-success"]) !!}
+                         {!! Form::close() !!}
+                        @else
+                         {{-- favoriteボタンのフォーム --}}
+                         {!! Form::open(['route' => ['favorites.favorite', $micropost->id]]) !!}
+                         {!! Form::submit('Favorite', ['class' => "btn btn-light"]) !!}
+                         {!! Form::close() !!}
+                        @endif
+                        
                 </div>
             </li>
         @endforeach
